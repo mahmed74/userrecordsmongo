@@ -26,8 +26,8 @@ const getData = async () => {
             </a>
     
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li><a class="dropdown-item" onclick="handleUpdate(${i})" >Edit</a></li>
-              <li><a class="dropdown-item" onclick="handleDelete(${i})">Delete</a></li>
+              <li><a class="dropdown-item" onclick="handleUpdate('${v._id}',${i})" >Edit</a></li>
+              <li><a class="dropdown-item" onclick="handleDelete('${v._id}')">Delete</a></li>
             </ul>
           </div>
     
@@ -74,16 +74,16 @@ const sendData = async () => {
   }
 };
 
-const handleDelete = async (i) => {
+const handleDelete = async (uid) => {
   const res = await axios.delete(
-    `https://usersapimongo.herokuapp.com/user/${i}`
+    `https://usersapimongo.herokuapp.com/user/${uid}`
   );
   console.log(res);
   location.reload();
   //   console.log("i", i);
 };
 
-const handleUpdate = async (i) => {
+const handleUpdate = async (uid, i) => {
   //   var name = document.getElementById("name").value;
   //   var email = document.getElementById("email").value;
   //   var address = document.getElementById("address").value;
@@ -97,25 +97,28 @@ const handleUpdate = async (i) => {
     RegisterBtn.disabled = true;
     updateBtn.disabled = false;
     updateBtn.onclick = () => {
-      Update(i);
+      Update(`${uid}`);
     };
   } catch (error) {
     console.log(error);
   }
 };
 
-const Update = async (i) => {
+const Update = async (uid) => {
   var name = document.getElementById("name").value;
   var email = document.getElementById("email").value;
   var address = document.getElementById("address").value;
 
   console.log({ name, email, address });
 
-  const res = await axios.put(`https://usersapimongo.herokuapp.com/user/${i}`, {
-    name,
-    email,
-    address,
-  });
+  const res = await axios.put(
+    `https://usersapimongo.herokuapp.com/user/${uid}`,
+    {
+      name,
+      email,
+      address,
+    }
+  );
   location.reload();
   console.log(res);
 };
